@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>房屋建筑学 · 题库自测</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f6fa;
+    color: #2d3436;
+    padding: 12px 12px 80px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  h1 {
+    text-align: center;
+    font-size: 20px;
+    padding: 16px 0 6px;
+    color: #0984e3;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #636e72;
+    margin-bottom: 16px;
+  }
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 13px;
+    color: #636e72;
+  }
+  .stats-bar span { font-weight: 600; color: #0984e3; }
+
+  .chapter-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: #0984e3;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin: 16px 0 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(9,132,227,0.3);
+  }
+
+  .q-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+  }
+  .q-card.correct { border-left-color: #00b894; background: #f0faf8; }
+  .q-card.wrong { border-left-color: #d63031; background: #fdf0ef; }
+  .q-card.show-answer { border-left-color: #0984e3; }
+
+  .q-number {
+    font-size: 12px;
+    color: #b2bec3;
+    margin-bottom: 4px;
+  }
+  .q-text {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 6px; }
+  .option {
+    padding: 9px 12px;
+    border: 1.5px solid #dfe6e9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    background: #fff;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .option:active { transform: scale(0.98); }
+  .option.selected { border-color: #0984e3; background: #e8f4fd; }
+  .option.correct-option { border-color: #00b894; background: #d4f5ed; color: #006644; }
+  .option.wrong-option { border-color: #d63031; background: #ffe0de; color: #a11; }
+
+  .answer-box {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    border-left: 3px solid #0984e3;
+  }
+  .answer-box.show { display: block; }
+  .answer-label { color: #0984e3; font-weight: 600; }
+
+  .btn-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.15s;
+  }
+  .btn:active { opacity: 0.7; }
+  .btn-blue { background: #0984e3; color: #fff; }
+  .btn-green { background: #00b894; color: #fff; }
+  .btn-orange { background: #fdcb6e; color: #2d3436; }
+  .btn-red { background: #d63031; color: #fff; }
+  .btn-outline { background: transparent; border: 1.5px solid #dfe6e9; color: #636e72; }
+
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 12px;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+  .bottom-bar .btn { flex: 1; text-align: center; padding: 10px 0; font-size: 14px; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: #b2bec3; font-size: 15px; }
+
+  .search-box {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #dfe6e9;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    outline: none;
+    background: #fff;
+  }
+  .search-box:focus { border-color: #0984e3; }
+</style>
+</head>
+<body>
+
+<h1>📐 房屋建筑学 · 题库自测</h1>
+<p class="subtitle">点击选项选择答案 · 可展开查看解析</p>
+
+<div class="stats-bar">
+  <div>📊 进度 <span id="progress">0/0</span></div>
+  <div>✅ <span id="correct-count">0</span> | ❌ <span id="wrong-count">0</span></div>
+</div>
+
+<input class="search-box" id="search" placeholder="🔍 搜索题目关键字..." oninput="filterQuestions()">
+
+<div id="question-list"></div>
+
+<div class="bottom-bar">
+  <button class="btn btn-blue" onclick="showAllAnswers()">📖 显示全部答案</button>
+  <button class="btn btn-orange" onclick="hideAllAnswers()">🙈 隐藏全部答案</button>
+  <button class="btn btn-red" onclick="resetAll()">🔄 重置</button>
+</div>
+
+<script>
+const questions = [
+  // ===== 第一章 民用建筑设计 =====
+  { ch:"第一章 民用建筑设计", q:"建筑的三个构成要素中起着主导作用的是？", opts:["A．建筑功能","B．建筑技术","C．建筑形象","D．建筑经济"], ans:0 },
+  { ch:"第一章 民用建筑设计", q:"下面全属于建筑物的是？", opts:["A．住宅、电塔","B．学校、堤坝","C．工厂、商场","D．烟囱、水塔"], ans:2 },
+  { ch:"第一章 民用建筑设计", q:"下面属于居住建筑的是？", opts:["A．幼儿园","B．疗养院","C．宿舍","D．旅馆"], ans:2 },
+  { ch:"第一章 民用建筑设计", q:"耐久等级为二级的建筑物，其耐久年限为？", opts:["A．50～100年","B．80～150年","C．25～50年","D．15～25年"], ans:0 },
+  { ch:"第一章 民用建筑设计", q:"耐火等级为一级的承重墙应满足？", opts:["A．难燃烧体3.0h","B．非燃烧体4.0h","C．难燃烧体5.0h","D．非燃烧体3.0h"], ans:3 },
+
+  // ===== 第二章 建筑平面设计 =====
+  { ch:"第二章 建筑平面设计", q:"容积率等于？", opts:["A．建筑基底面积/总用地面积","B．建筑基底面积/总建筑面积","C．总建筑面积/总用地面积","D．建筑使用面积/总建筑面积"], ans:2 },
+  { ch:"第二章 建筑平面设计", q:"日照间距是根据什么计算的？", opts:["A．冬至正午照到底层窗上檐高度","B．照到底层窗中间高度","C．照到底层窗窗台高度","D．照到底层地面高度"], ans:2 },
+  { ch:"第二章 建筑平面设计", q:"\"三通一平\"的内容是？", opts:["A．水通、电通、路通、平整场地","B．水通、暖通、煤气通、路平","C．通信、暖通、水通、路平","D．电通、信通、水通、平整场地"], ans:0 },
+  { ch:"第二章 建筑平面设计", q:"占地2100m²三层，每层900m²，容积率为？", opts:["A．0.8","B．1.2","C．1.5","D．2.0"], ans:1 },
+  { ch:"第二章 建筑平面设计", q:"基底与道路红线不连接时应采取？", opts:["A．改变红线","B．扩大用地","C．改变高程","D．设通路"], ans:3 },
+  { ch:"第二章 建筑平面设计", q:"单侧采光房间深度不大于窗上口至地面距离的？", opts:["A．2、3倍","B．1、2倍","C．1.5、3倍","D．2、4倍"], ans:3 },
+  { ch:"第二章 建筑平面设计", q:"民用建筑房间开间进深以什么为模数？", opts:["A．3M","B．1M","C．6M","D．4M"], ans:0 },
+  { ch:"第二章 建筑平面设计", q:"房间设两个门的条件是？", opts:["A．面积≥50m²或人数≥60人","B．面积≥60m²或人数≥50人","C．面积≥100m²或人数≥50人","D．面积≥30m²或人数≥50人"], ans:1 },
+  { ch:"第二章 建筑平面设计", q:"公共建筑楼梯数量不小于？", opts:["A．1个","B．2个","C．3个","D．4个"], ans:1 },
+  { ch:"第二章 建筑平面设计", q:"主要房间适宜朝向是？", opts:["A．南向或南偏东/偏西少许","B．南向或东向","C．东向或西向","D．北向或南向"], ans:0 },
+  { ch:"第二章 建筑平面设计", q:"民用建筑间距主要满足什么？", opts:["A．防火","B．通风","C．日照","D．视线"], ans:2 },
+
+  // ===== 第三四章 剖立面设计 =====
+  { ch:"第三四章 建筑剖立面设计", q:"建筑物的层高是指？", opts:["A．吊顶到地面的距离","B．上下两层楼地面的距离","C．梁底到下层地面距离","D．板底到下层地面距离"], ans:1 },
+  { ch:"第三四章 建筑剖立面设计", q:"住宅的使用面积是？", opts:["A．居住面积减结构面积","B．建筑面积减辅助面积","C．建筑面积减结构面积","D．居住面积加辅助面积"], ans:2 },
+  { ch:"第三四章 建筑剖立面设计", q:"层高3m板厚120mm梁高600mm，二层地面标高为？", opts:["A．±0.000","B．3.000","C．3.120","D．3.720"], ans:1 },
+  { ch:"第三四章 建筑剖立面设计", q:"普通房间窗台高度一般取？", opts:["A．500~600mm","B．900~1000mm","C．1000~1200mm","D．无限制"], ans:1 },
+  { ch:"第三四章 建筑剖立面设计", q:"民用建筑最常见的剖面形式是？", opts:["A．矩形","B．圆形","C．三角形","D．梯形"], ans:0 },
+  { ch:"第三四章 建筑剖立面设计", q:"设计视点高低与地面坡度关系？", opts:["A．正比关系","B．反比关系","C．不会改变","D．毫无关系"], ans:1 },
+  { ch:"第三四章 建筑剖立面设计", q:"电影院错位排列视线升高值为？", opts:["A．60mm","B．120mm","C．240mm","D．150mm"], ans:0 },
+
+  // ===== 第六章 墙体 =====
+  { ch:"第六章 墙体", q:"普通粘土砖规格为？", opts:["A．240×120×60","B．240×115×53","C．240×110×55","D．240×180×60"], ans:1 },
+  { ch:"第六章 墙体", q:"承重墙最小厚度为？", opts:["A．370mm","B．240mm","C．180mm","D．120mm"], ans:2 },
+  { ch:"第六章 墙体", q:"18砖墙、37砖墙构造尺寸为？", opts:["A．180/360mm","B．185/365mm","C．178/365mm","D．180/365mm"], ans:2 },
+  { ch:"第六章 墙体", q:"小开间建筑适宜采用？", opts:["A．横墙承重","B．纵墙承重","C．纵横墙承重","D．墙柱混合承重"], ans:0 },
+  { ch:"第六章 墙体", q:"垫层为透水材料时水平防潮层位置？", opts:["A．±0.00处","B．-0.060m处","C．+0.060m处","D．+0.600m处"], ans:2 },
+  { ch:"第六章 墙体", q:"墙段1.5m以内应尽量采用砖模？", opts:["A．60mm","B．120mm","C．240mm","D．125mm"], ans:3 },
+  { ch:"第六章 墙体", q:"钢筋砖过梁净跨宜？", opts:["A．≤1.5m，不超2m","B．≤2.0m，不超3m","C．≤1.8m，不超3m","D．≤2.0m，不超2.5m"], ans:0 },
+  { ch:"第六章 墙体", q:"过梁伸入墙内长度不小于？", opts:["A．120mm","B．180mm","C．200mm","D．240mm"], ans:3 },
+  { ch:"第六章 墙体", q:"附加圈梁与原有圈梁搭接长度？", opts:["A．≤2倍垂直距且≤1000mm","B．≥2倍垂直距且≥1000mm","C．≥1.5倍垂直距且≥500mm","D．≥4倍垂直距且≥1500mm"], ans:1 },
+  { ch:"第六章 墙体", q:"构造柱最小断面尺寸为？", opts:["A．120×180mm","B．180×240mm","C．200×300mm","D．240×370mm"], ans:1 },
+  { ch:"第六章 墙体", q:"勒脚处水平防潮层一般设于？", opts:["A．基础顶面","B．地坪结构层砖缝中","C．地坪结构层之下60mm处","D．室外地坪之上60mm处"], ans:2 },
+  { ch:"第六章 墙体", q:"以下哪项不是墙体加固做法？", opts:["A．增设壁柱","B．设置圈梁","C．构造柱","D．用砌块砌筑"], ans:3 },
+  { ch:"第六章 墙体", q:"有抗震要求时墙身防潮层不宜采用？", opts:["A．防水砂浆","B．细石混凝土配3φ6","C．防水卷材","D．圈梁"], ans:2 },
+
+  // ===== 第六章 基础 =====
+  { ch:"第六章 基础", q:"地基土均匀时基础最小埋深不小于？", opts:["A．300mm","B．500mm","C．800mm","D．1000mm"], ans:1 },
+  { ch:"第六章 基础", q:"砖基础刚性角宽高比应为？", opts:["A．1:1.2","B．1:1.5","C．1:2","D．1:2.5"], ans:1 },
+  { ch:"第六章 基础", q:"地下水位高时基础底面应埋置在？", opts:["A．最高水位200mm以下","B．最低水位200mm以下","C．最高水位200mm以上","D．最低水位200mm以上"], ans:1 },
+  { ch:"第六章 基础", q:"砖基础大放脚每2皮砖挑出？", opts:["A．一皮砖","B．3/4砖","C．1/2砖","D．1/4砖"], ans:3 },
+  { ch:"第六章 基础", q:"卷材外防水收头应在最高水位以上？", opts:["A．以下300mm","B．以上300mm","C．以下500~1000mm","D．以上500~1000mm"], ans:3 },
+  { ch:"第六章 基础", q:"以下属于柔性基础的是？", opts:["A．钢筋混凝土基础","B．毛石基础","C．素混凝土基础","D．砖基础"], ans:0 },
+
+  // ===== 第七章 楼梯 =====
+  { ch:"第七章 楼梯", q:"常见楼梯坡度范围为？", opts:["A．30~60°","B．20~45°","C．45~60°","D．30~45°"], ans:1 },
+  { ch:"第七章 楼梯", q:"栏杆水平间距不应大于？", opts:["A．100mm","B．110mm","C．120mm","D．130mm"], ans:2 },
+  { ch:"第七章 楼梯", q:"踏步宽b和踏步高h的关系式为？", opts:["A．2h+b=600~620mm","B．2h+b=450mm","C．h+b=600~620mm","D．2h+b=500~600mm"], ans:0 },
+  { ch:"第七章 楼梯", q:"残疾人坡道坡度不大于？", opts:["A．1:12","B．1:10","C．1:8","D．1:6"], ans:0 },
+  { ch:"第七章 楼梯", q:"自动扶梯坡度一般采用？", opts:["A．10°","B．20°","C．30°","D．45°"], ans:2 },
+  { ch:"第七章 楼梯", q:"不宜用于疏散楼梯的是？", opts:["A．直跑楼梯","B．两跑楼梯","C．剪刀楼梯","D．螺旋形楼梯"], ans:3 },
+  { ch:"第七章 楼梯", q:"7度以上地震区不宜用哪种楼梯？", opts:["A．预制梁板式","B．预制墙承式","C．现浇板式","D．预制悬臂踏步"], ans:1 },
+  { ch:"第七章 楼梯", q:"公共建筑梯段最小宽度不应小于？", opts:["A．900mm","B．1000mm","C．1100mm","D．1200mm"], ans:2 },
+
+  // ===== 第八章 楼地层 =====
+  { ch:"第八章 楼地层", q:"空心板孔两端堵严的目的是？", opts:["A．增加保温性","B．避免板端被压坏","C．增强整体性","D．避免板端滑移"], ans:1 },
+  { ch:"第八章 楼地层", q:"预制板缝宽大于多少时需配纵向钢筋？", opts:["A．200mm","B．100mm","C．50mm","D．30mm"], ans:2 },
+  { ch:"第八章 楼地层", q:"地面排水坡度一般为？", opts:["A．1%~1.5%","B．2%~3%","C．0.5%~1%","D．3%~5%"], ans:0 },
+  { ch:"第八章 楼地层", q:"吊顶的吊筋连接什么？", opts:["A．主搁栅和屋面板/楼板","B．主搁栅与次搁栅","C．次搁栅与面层","D．主搁栅与面层"], ans:0 },
+  { ch:"第八章 楼地层", q:"以下属于整体地面的是？", opts:["A．细石混凝土+水泥砂浆","B．花岗岩+水泥砂浆","C．细石混凝土+地毯","D．花岗岩+地毯"], ans:0 },
+  { ch:"第八章 楼地层", q:"阳台栏杆垂直净距不应大于？", opts:["A．100mm","B．110mm","C．120mm","D．150mm"], ans:1 },
+
+  // ===== 第十章 门窗 =====
+  { ch:"第十章 门窗", q:"木窗洞口宽度和高度均采用多少mm的模数？", opts:["A．600","B．300","C．100","D．50"], ans:1 },
+  { ch:"第十章 门窗", q:"一般民用建筑门的高度不宜小于多少mm？", opts:["A．2100","B．2200","C．2300","D．2400"], ans:0 },
+];
+
+// ===== State =====
+const state = new Array(questions.length).fill(null); // null|selectedIndex
+const answerShown = new Array(questions.length).fill(false);
+let correctCount = 0, wrongCount = 0;
+
+function render() {
+  const searchTerm = document.getElementById('search').value.trim().toLowerCase();
+  const container = document.getElementById('question-list');
+  container.innerHTML = '';
+
+  let currentCh = '';
+  let shown = 0;
+
+  questions.forEach((q, i) => {
+    const match = !searchTerm || q.q.includes(searchTerm) || q.ch.includes(searchTerm);
+    if (!match) return;
+    shown++;
+
+    // Chapter header
+    if (q.ch !== currentCh) {
+      currentCh = q.ch;
+      const chDiv = document.createElement('div');
+      chDiv.className = 'chapter-title';
+      chDiv.textContent = q.ch;
+      container.appendChild(chDiv);
+    }
+
+    // Card
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + i;
+
+    const sel = state[i];
+    if (sel !== null) {
+      card.classList.add(sel === q.ans ? 'correct' : 'wrong');
+    }
+    if (answerShown[i]) card.classList.add('show-answer');
+
+    card.innerHTML = `
+      <div class="q-number">#${i+1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${i}">
+        ${q.opts.map((o, j) => {
+          let cls = 'option';
+          if (answerShown[i] && j === q.ans) cls += ' correct-option';
+          if (answerShown[i] && sel === j && j !== q.ans) cls += ' wrong-option';
+          if (!answerShown[i] && sel === j) cls += ' selected';
+          return `<div class="${cls}" data-q="${i}" data-opt="${j}">${o}</div>`;
+        }).join('')}
+      </div>
+      <div class="answer-box ${answerShown[i]?'show':''}" id="ans-${i}">
+        <span class="answer-label">✅ 答案：</span>${q.opts[q.ans].substring(0, q.opts[q.ans].indexOf('．')+1)}${q.opts[q.ans].substring(q.opts[q.ans].indexOf('．')+1)}
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-blue btn-sm" onclick="toggleAnswer(${i})">${answerShown[i]?'🙈隐藏答案':'📖查看答案'}</button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Bind option clicks
+  document.querySelectorAll('.option').forEach(el => {
+    el.addEventListener('click', function() {
+      const qi = parseInt(this.dataset.q);
+      const oi = parseInt(this.dataset.opt);
+      selectOption(qi, oi);
+    });
+  });
+
+  updateStats();
+  if (shown === 0) {
+    container.innerHTML = '<div class="empty-state">😅 没有匹配的题目，换个关键词试试</div>';
+  }
+}
+
+function selectOption(qi, oi) {
+  if (state[qi] !== null) return; // already answered
+  state[qi] = oi;
+  if (oi === questions[qi].ans) correctCount++;
+  else wrongCount++;
+  render();
+}
+
+function toggleAnswer(i) {
+  answerShown[i] = !answerShown[i];
+  render();
+}
+
+function showAllAnswers() {
+  questions.forEach((_, i) => { answerShown[i] = true; });
+  render();
+}
+
+function hideAllAnswers() {
+  questions.forEach((_, i) => { answerShown[i] = false; });
+  render();
+}
+
+function resetAll() {
+  questions.forEach((_, i) => { state[i] = null; answerShown[i] = false; });
+  correctCount = 0;
+  wrongCount = 0;
+  render();
+}
+
+function filterQuestions() { render(); }
+
+function updateStats() {
+  const answered = state.filter(s => s !== null).length;
+  document.getElementById('progress').textContent = answered + '/' + questions.length;
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+}
+
+// Init
+render();
+</script>
+</body>
+</html>
