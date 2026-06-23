@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>房屋建筑学 · 名词解释</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;padding:12px 12px 80px;color:#333;font-size:15px;line-height:1.7}
+h1{text-align:center;font-size:20px;color:#1a1a2e;padding:16px 0 4px}
+.subtitle{text-align:center;color:#888;font-size:13px;margin-bottom:16px}
+.search-box{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:24px;font-size:14px;margin-bottom:12px;outline:none}
+.chapter-block{background:white;border-radius:12px;padding:12px 14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.chapter-title{font-size:15px;font-weight:600;color:#1a1a2e;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid #f0f0f0}
+.term-item{padding:10px 0;border-bottom:1px solid #f5f5f5;display:flex;align-items:flex-start}
+.term-item:last-child{border-bottom:none}
+.term-num{display:inline-block;background:#fff3e0;color:#e65100;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;font-size:11px;margin-right:8px;flex-shrink:0;margin-top:2px}
+.term-name{font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:4px}
+.term-def{font-size:13px;color:#666;line-height:1.6}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:white;padding:10px 14px;box-shadow:0 -2px 10px rgba(0,0,0,0.1);text-align:center;font-size:13px;color:#888;z-index:10}
+</style>
+</head>
+<body>
+<h1>📚 名词解释汇总</h1>
+<p class="subtitle">房屋建筑学 · 共35个名词</p>
+<input class="search-box" id="search" placeholder="🔍 搜索..." oninput="filterQ()">
+<div id="content"></div>
+<div class="bottom-bar">共 35 个名词</div>
+<script>
+var data = [{"ch":"第一章 民用建筑设计","q":"耐火等级","a":"耐火等级是衡量建筑物耐火程度的标准，它由组成房屋构件的燃烧性能和耐火极限的最低值所决定，划分耐火等级的目的是根据建筑物的用途不同提出不同的耐火等级要求，做到既有利于安全，又有利于节约基本建设投资，耐火等级划分为四级。"},{"ch":"第一章 民用建筑设计","q":"耐火极限","a":"耐火极限指任一建筑构件在规定的耐火试验条件下，从受到火的作用时起，到失去支持能力、或完整性被破坏、或失去隔火作用时为止的这段时间，用小时表示。"},{"ch":"第一章 民用建筑设计","q":"基本模数","a":"基本模数是指模数协调中选用的基本尺寸单位，其数值为 1OO mm，符号为M，即1M=1OO mm。"},{"ch":"第一章 民用建筑设计","q":"模数数列","a":"模数数列指由基本模数、扩大模数、分模数为基础扩展成的一系列尺寸。"},{"ch":"第一章 民用建筑设计","q":"大量性建筑","a":"指建筑数量较多、规模不大，单方造价较低的建筑，如一般居住建筑、中小学校、小型商店、诊所等。"},{"ch":"第二章 建筑平面设计","q":"建筑密度","a":"总建筑基底面积与总用地面积的比值。"},{"ch":"第二章 建筑平面设计","q":"建筑容积","a":"总建筑面积与总用地面积的比值。"},{"ch":"第二章 建筑平面设计","q":"开间","a":"横向两定位轴线的距离。"},{"ch":"第二章 建筑平面设计","q":"窗地面积比","a":"窗洞口面积之和与房间地面面积之比。"},{"ch":"第二章 建筑平面设计","q":"日照间距","a":"日照间距指为了保证房间有一定的日照时数，建筑物彼此互不遮挡所必须满足的距离。"},{"ch":"第二章 建筑平面设计","q":"袋形走廊","a":"指只有一个出入口的走道（或单向疏散的走道）。"},{"ch":"第二章 建筑平面设计","q":"封闭式楼梯间","a":"指设有阻挡烟气的双向弹簧门的楼梯间。"},{"ch":"第六章 墙体","q":"承重墙","a":"承受楼板或屋顶等传来的荷载的墙体。"},{"ch":"第六章 墙体","q":"自承重墙","a":"不承受外来荷载，仅承受自身重量并将其传至基础的墙体。"},{"ch":"第六章 墙体","q":"隔墙","a":"分隔建筑物内部空间，自身重量由楼板或梁来承担的墙体。"},{"ch":"第六章 墙体","q":"横墙承重","a":"楼面及屋面板等水平构件搁置在横墙上。"},{"ch":"第六章 墙体","q":"纵墙承重","a":"楼板及屋面板等水平构件搁置在纵墙上，横墙只起分隔空间和连接纵墙的作用"},{"ch":"第六章 墙体","q":"纵横墙承重","a":"承重墙体由纵横两个方向的墙体组成"},{"ch":"第六章 墙体","q":"墙柱混合承重","a":"内部采用柱梁组成的内框架承重，四周采用墙承重"},{"ch":"第六章 墙体","q":"勒脚","a":"墙身接近室外地面的部分，高度一般指室内地面与室外地面的高差"},{"ch":"第六章 墙体","q":"明沟","a":"设置在外墙四周的排水沟，它将水有组织的导向积水井，然后流入排水系统。"},{"ch":"第六章 墙体","q":"散水","a":"沿建筑外墙四周地面设置的3%-5%的倾斜坡面。"},{"ch":"基础","q":"地基","a":"基础底面以下，受到荷载作用影响范围内的部分土层。不是建筑的一部分。"},{"ch":"基础","q":"基础","a":"建筑物的墙或柱埋在地下的扩大部分，是建筑物的一部分。它承受上部结构传下来的全部荷载，并把这些荷载连同本身重量一起传到地基上。 它是建筑物的构造组成部分，承受着建筑物的全部荷载，并将荷载传给地基。"},{"ch":"基础","q":"天然地基","a":"指天然状态下即具有足够的承载力，不需经过人工处理的地基。如岩石、碎石土、砂土、粘性土和人工填土等。"},{"ch":"基础","q":"人工地基","a":"当土层的承载力较差或虽然土层好，但上部荷载较大时，为使地基具有足够的承载力，需对土层进行人工处理的地基。"},{"ch":"基础","q":"基础埋置深度","a":"指从室外设计地面至基础底面的垂直距离。"},{"ch":"屋顶","q":"材料找坡","a":"又称为垫置坡度或填坡，是指将屋面板水平搁置，在屋面板上用轻质材料铺垫而形成屋面坡度的一种做法。"},{"ch":"屋顶","q":"结构找坡","a":"又称为搁置坡度或撑坡，是指将屋面板倾斜地搁置在下部的承重墙或屋面梁及屋架上而形成屋面坡度的一种做法。"},{"ch":"屋顶","q":"无组织排水","a":"又称自由落水，指雨水经屋檐直接自由落下"},{"ch":"屋顶","q":"有组织排水","a":"指屋面雨水通过排水系统，有组织地排至室外地面或地下管沟的一种排水方式"},{"ch":"屋顶","q":"柔性防水屋面 （卷材防水屋面 )","a":"利用防水卷材和粘结剂结合，形成连续致密的构造层来防水的一种屋顶。"},{"ch":"屋顶","q":"泛水","a":"屋面防水层与垂直屋面突出物交接处的防水处理。"},{"ch":"门窗","q":"立口","a":"先立窗口，后砌墙体"},{"ch":"门窗","q":"塞口","a":"是先砌墙，预留窗洞口，后装门窗框。"}];
+var chapters = {};
+data.forEach(function(t, i){ if(!chapters[t.ch]) chapters[t.ch]=[]; chapters[t.ch].push(i); });
+
+function render(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  var h=''; var idx=0;
+  Object.keys(chapters).forEach(function(ch){
+    var ids=chapters[ch].filter(function(i){return data[i].q.toLowerCase().includes(kw) || data[i].a.toLowerCase().includes(kw)});
+    if(!ids.length)return;
+    h+='<div class="chapter-block"><div class="chapter-title">'+ch+'</div>';
+    ids.forEach(function(j){
+      idx++; var t=data[j];
+      h+='<div class="term-item"><span class="term-num">'+idx+'</span><div><div class="term-name">'+t.q+'</div><div class="term-def">'+t.a+'</div></div></div>';
+    });
+    h+='</div>';
+  });
+  document.getElementById('content').innerHTML=h;
+}
+
+function filterQ(){render()}
+render();
+</script>
+</body>
+</html>
